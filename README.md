@@ -18,6 +18,24 @@ base-name--azid--x-s3
 ```
 For more information, see Directory bucket naming rules.
 
+## [Regional and Zonal endpoints](https://docs.aws.amazon.com/zh_tw/AmazonS3/latest/userguide/s3-express-Regions-and-Zones.html)
+source: https://docs.aws.amazon.com/zh_tw/AmazonS3/latest/userguide/s3-express-Regions-and-Zones.html
+- us-east-1
+  - use1-az4
+  - use1-az5
+  - use1-az6
+- us-west-2
+  - usw2-az1
+  - usw2-az3
+  - usw2-az4
+- ap-northeast-1
+  - apne1-az1
+  - apne1-az4
+- eu-north-1
+  - eun1-az1
+  - eun1-az2
+  - eun1-az3
+
 ### Create bucket to upload
 ```bash
 cd create-bucket/
