@@ -62,6 +62,12 @@ mkfile 5m 5mb-file.txt
 mkfile 10m 10mb-file.txt
 mkfile 50m 50mb-file.txt
 
+# or
+
+dd if=/dev/zero of=1mb-file.txt bs=1M count=1
+dd if=/dev/zero of=5mb-file.txt bs=5M count=1
+dd if=/dev/zero of=10mb-file.txt bs=10M count=1
+dd if=/dev/zero of=50mb-file.txt bs=50M count=1
 ```
 
 ### Upload file testing
@@ -99,6 +105,65 @@ go run main.go -regional-bucket neil-demo-s3-bucket-upload-testing -az-bucket ne
 2023/12/11 15:27:34 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：1.542241208s
 --- end ---
 ```
+`cloudshell` ap-northeast-1
+```bash
+wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
+
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+
+export PATH=$PATH:/usr/local/go/bin
+
+go version
+
+git clone https://github.com/neilkuan/s3-bucket-upload-testing.git
+
+go run main.go -regional-bucket neil-demo-s3-bucket-upload-testing -az-bucket neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3
+
+--- example output ---
+2023/12/11 08:05:18 opening file 1mb-file.txt
+2023/12/11 08:05:18 opening file 5mb-file.txt
+2023/12/11 08:05:18 opening file 10mb-file.txt
+2023/12/11 08:05:18 opening file 50mb-file.txt
+2023/12/11 08:05:18 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：290.511134ms
+2023/12/11 08:05:19 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：356.016899ms
+2023/12/11 08:05:19 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：143.570487ms
+2023/12/11 08:05:19 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：496.427168ms
+2023/12/11 08:05:19 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：14.863663ms
+2023/12/11 08:05:19 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：90.432175ms
+2023/12/11 08:05:20 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：54.523329ms
+2023/12/11 08:05:20 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：144.505499ms
+--- end ---
+```
+`ec2` ap-northeast-1 apn4
+```bash
+wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
+
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+
+export PATH=$PATH:/usr/local/go/bin
+
+go version
+
+git clone https://github.com/neilkuan/s3-bucket-upload-testing.git
+
+go run main.go -regional-bucket neil-demo-s3-bucket-upload-testing -az-bucket neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3
+
+--- example output ---
+2023/12/11 08:20:20 opening file 1mb-file.txt
+2023/12/11 08:20:20 opening file 5mb-file.txt
+2023/12/11 08:20:20 opening file 10mb-file.txt
+2023/12/11 08:20:20 opening file 50mb-file.txt
+2023/12/11 08:20:20 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：236.738793ms
+2023/12/11 08:20:21 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：364.461091ms
+2023/12/11 08:20:21 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：132.838794ms
+2023/12/11 08:20:22 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：604.850633ms
+2023/12/11 08:20:22 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：14.581521ms
+2023/12/11 08:20:22 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：69.912294ms
+2023/12/11 08:20:22 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：55.374757ms
+2023/12/11 08:20:22 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：163.96076ms
+--- end ---
+```
+
 
 
 # 🤪🤪🤪 Also take a look 🤪🤪🤪: [AWS S3 Pricing](https://aws.amazon.com/tw/s3/pricing/)
