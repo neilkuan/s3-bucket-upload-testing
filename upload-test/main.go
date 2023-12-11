@@ -5,12 +5,11 @@ import (
 	"flag"
 	"log"
 	"os"
-	"sync"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
@@ -31,23 +30,10 @@ func main() {
 	cfg.Region = "ap-northeast-1"
 	// Create an Amazon S3 service client
 	client := s3.NewFromConfig(cfg)
+	uploader := manager.NewUploader(client)
 	if err != nil {
 		log.Fatal(err)
 	}
-	session, err := client.CreateSession(context.TODO(), &s3.CreateSessionInput{
-		Bucket: azBucket,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	sessionCfg, err := config.LoadDefaultConfig(context.TODO(),
-		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
-			aws.ToString(session.Credentials.AccessKeyId),
-			aws.ToString(session.Credentials.SecretAccessKey),
-			aws.ToString(session.Credentials.SessionToken))),
-	)
-
-	sessionClient := s3.NewFromConfig(sessionCfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -62,49 +48,44 @@ func main() {
 		}
 		files[name] = file
 	}
-
-	wg := new(sync.WaitGroup)
-	wg.Add(2)
-	go uploadRegionBucket(files, client, wg, regionalBucket)
-	go uploadAzBucket(files, sessionClient, wg, azBucket)
-	wg.Wait()
+	for fileName, file := range files {
+		uploadAzBucket(file, fileName, uploader, azBucket)
+		uploadRegionBucket(file, fileName, uploader, regionalBucket)
+	}
 
 }
 
-func uploadRegionBucket(files map[string]*os.File, client *s3.Client, wg *sync.WaitGroup, bucket *string) {
-	log.Println("upload file to bucket " + aws.ToString(bucket))
-
-	for fileName, file := range files {
-		startTimeUploadRegionBucket := time.Now()
-		client.PutObject(context.TODO(), &s3.PutObjectInput{
-			Bucket: bucket,
-			Key:    aws.String(fileName),
-			Body:   file,
-		})
-		endTimeUploadRegionBucket := time.Now()
-		uploadTime := endTimeUploadRegionBucket.Sub(startTimeUploadRegionBucket)
-
+func uploadRegionBucket(file *os.File, fileName string, uploader *manager.Uploader, bucket *string) {
+	startTimeUploadRegionBucket := time.Now()
+	_, err := uploader.Upload(context.TODO(), &s3.PutObjectInput{
+		Bucket: bucket,
+		Key:    aws.String(fileName),
+		Body:   file,
+	})
+	if err != nil {
+		log.Println("Failed upload file", err)
+	}
+	endTimeUploadRegionBucket := time.Now()
+	uploadTime := endTimeUploadRegionBucket.Sub(startTimeUploadRegionBucket)
+	if err == nil {
 		log.Printf("upload file %s to %s successful time：%s\n", fileName, aws.ToString(bucket), uploadTime)
 	}
-
-	defer wg.Done()
 }
 
-func uploadAzBucket(files map[string]*os.File, sessionClient *s3.Client, wg *sync.WaitGroup, bucket *string) {
-	log.Println("upload file to bucket ", aws.ToString(bucket))
+func uploadAzBucket(file *os.File, fileName string, uploader *manager.Uploader, bucket *string) {
+	startTimeUploadAzBucket := time.Now()
+	_, err := uploader.Upload(context.TODO(), &s3.PutObjectInput{
+		Bucket: bucket,
+		Key:    aws.String(fileName),
+		Body:   file,
+	})
+	if err != nil {
+		log.Println("Failed upload file", err)
+	}
+	endTimeUploadAzBucket := time.Now()
+	uploadTime := endTimeUploadAzBucket.Sub(startTimeUploadAzBucket)
 
-	for fileName, file := range files {
-		startTimeUploadAzBucket := time.Now()
-		sessionClient.PutObject(context.TODO(), &s3.PutObjectInput{
-			Bucket: bucket,
-			Key:    aws.String(fileName),
-			Body:   file,
-		})
-		endTimeUploadAzBucket := time.Now()
-		uploadTime := endTimeUploadAzBucket.Sub(startTimeUploadAzBucket)
-
+	if err == nil {
 		log.Printf("upload file %s to %s successful time：%s\n", fileName, aws.ToString(bucket), uploadTime)
 	}
-
-	defer wg.Done()
 }

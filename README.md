@@ -85,20 +85,18 @@ Example:
 go run main.go -regional-bucket neil-demo-s3-bucket-upload-testing -az-bucket neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3
 
 --- example output ---
-2023/12/11 14:23:41 opening file 1mb-file.txt
-2023/12/11 14:23:41 opening file 5mb-file.txt
-2023/12/11 14:23:41 opening file 10mb-file.txt
-2023/12/11 14:23:41 opening file 50mb-file.txt
-2023/12/11 14:23:41 upload file to bucket  neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3
-2023/12/11 14:23:41 upload file to bucket neil-demo-s3-bucket-upload-testing
-2023/12/11 14:23:41 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：2.572792ms
-2023/12/11 14:23:41 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：972.708µs
-2023/12/11 14:23:41 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：1.464167ms
-2023/12/11 14:23:41 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：1.39325ms
-2023/12/11 14:23:46 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：4.8290915s
-2023/12/11 14:23:50 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：3.714354625s
-2023/12/11 14:24:07 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：17.285714167s
-2023/12/11 14:24:07 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：534.065542ms
+2023/12/11 15:27:17 opening file 1mb-file.txt
+2023/12/11 15:27:17 opening file 5mb-file.txt
+2023/12/11 15:27:17 opening file 10mb-file.txt
+2023/12/11 15:27:17 opening file 50mb-file.txt
+2023/12/11 15:27:23 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：5.561448666s
+2023/12/11 15:27:28 upload file 50mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：5.102450625s
+2023/12/11 15:27:28 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：359.434459ms
+2023/12/11 15:27:29 upload file 1mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：283.865292ms
+2023/12/11 15:27:30 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：1.288827833s
+2023/12/11 15:27:31 upload file 5mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：786.911083ms
+2023/12/11 15:27:32 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing--apne1-az4--x-s3 successful time：1.565533458s
+2023/12/11 15:27:34 upload file 10mb-file.txt to neil-demo-s3-bucket-upload-testing successful time：1.542241208s
 --- end ---
 ```
 
